@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #1877f2;
+  --dark: #1a1a1a;
+  --light-bg: #f0f2f5;
+  --light-blue: #e7f0fd;
+}
+
+body {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+}
+
+@keyframes scrolling-banner {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scrolling-banner {
+  animation: scrolling-banner 30s linear infinite;
+}
+
+.brand-scroll-fade {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
