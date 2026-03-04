@@ -3,51 +3,65 @@
 :root {
   --primary: #1877f2;
   --dark: #1a1a1a;
-  --light-bg: #f0f2f5;
+  --light-bg: #f0f0f0;
   --light-blue: #e7f0fd;
 }
 
 body {
   font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  background: #f0f0f0;
 }
 
-@keyframes scrolling-banner {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Marquee animations */
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@keyframes marquee-down {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+.animate-marquee-up {
+  animation: marquee-up 25s linear infinite;
+}
+.animate-marquee-down {
+  animation: marquee-down 25s linear infinite;
 }
 
-.animate-scrolling-banner {
-  animation: scrolling-banner 30s linear infinite;
+/* Horizontal scrolling banner */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll-left {
+  animation: scroll-left 20s linear infinite;
 }
 
-.brand-scroll-fade {
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
+/* Wavy underline */
+.wavy-underline {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: #1877f2;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 3px;
 }
 
-@keyframes count-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Fade mask for scrolling areas */
+.scroll-fade-mask {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.scroll-fade-x {
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+/* Pulse glow for CTA */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(24, 119, 242, 0); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }

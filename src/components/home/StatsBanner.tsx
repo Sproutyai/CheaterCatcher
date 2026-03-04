@@ -1,26 +1,24 @@
 export default function StatsBanner() {
   return (
-    <section className="bg-[#1877f2] rounded-3xl mx-4 md:mx-6 mt-6 py-12 border border-[#1a1a1a]">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-white">
-          <div className="flex items-center gap-2">
-            <span className="text-yellow-400 text-2xl">★★★★★</span>
-            <span className="font-bold text-lg">500,000+ posts indexed</span>
-          </div>
-          <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tight">
-            Find the Truth
-          </h3>
-          <div className="flex -space-x-3">
-            {[10, 11, 12, 13].map((id) => (
-              <img
-                key={id}
-                src={`https://i.pravatar.cc/50?img=${id}`}
-                alt="User"
-                className="w-12 h-12 rounded-full border-2 border-white"
-              />
-            ))}
-          </div>
-        </div>
+    <section className="mt-4 bg-[#1877f2] rounded-2xl p-5 shadow-sm text-white text-center">
+      <div className="flex items-center justify-center gap-1 mb-2">
+        <span className="text-yellow-300 text-lg">★★★★★</span>
+        <span className="text-xs font-semibold text-white/90">
+          500,000+ posts indexed
+        </span>
+      </div>
+      <h3 className="text-2xl font-black tracking-tight mb-3">
+        Find the Truth
+      </h3>
+      <div className="flex justify-center -space-x-2">
+        {[10, 11, 12, 13].map((id) => (
+          <img
+            key={id}
+            src={`https://i.pravatar.cc/40?img=${id}`}
+            alt=""
+            className="w-10 h-10 rounded-full border-2 border-white"
+          />
+        ))}
       </div>
     </section>
   );

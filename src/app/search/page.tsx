@@ -1,156 +1,216 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+
+import StepSearchMode from '@/components/search/StepSearchMode';
+import StepFirstName from '@/components/search/StepFirstName';
+import StepAge from '@/components/search/StepAge';
+import StepLocation from '@/components/search/StepLocation';
+import StepAreaStats from '@/components/search/StepAreaStats';
+import StepExamplePosts from '@/components/search/StepExamplePosts';
+import StepStakes from '@/components/search/StepStakes';
+import StepRelatability from '@/components/search/StepRelatability';
+import StepViralSpread from '@/components/search/StepViralSpread';
+import StepRemoval from '@/components/search/StepRemoval';
+import StepInstagram from '@/components/search/StepInstagram';
+import StepSocialProof from '@/components/search/StepSocialProof';
+import StepPhotoUpload from '@/components/search/StepPhotoUpload';
+
+const TOTAL_STEPS = 13;
+
+const TIPS = [
+  'Millions of posts are shared in AWDTSG groups every month',
+  'We search across hundreds of city-specific AWDTSG groups',
+  'Age helps us find posts mentioning the right person accurately',
+  'Location matching helps surface local posts instantly',
+  'New posts are added to AWDTSG groups every minute',
+  '1 in 3 women check AWDTSG before a first date',
+  'Over 500,000 posts indexed from AWDTSG groups',
+  'Our AI matches faces even across blurry photos',
+  'Join thousands who\'ve already found the truth',
+  'Instagram matching increases accuracy by 60%',
+  'Real people, real accountability — searchable now',
+  'Photos let our AI find matches even without a name',
+  'Your report will be ready in under 3 minutes',
+];
 
 export default function SearchPage() {
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+  const [step, setStep] = useState(1);
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward');
+  const [animating, setAnimating] = useState(false);
+
+  // Wizard state
+  const [searchMode, setSearchMode] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [age, setAge] = useState('');
+  const [city, setCity] = useState('');
+  const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
+  const [instagram, setInstagram] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPhoto(file);
-      setPhotoPreview(URL.createObjectURL(file));
+  const isValid = useCallback(() => {
+    switch (step) {
+      case 1: return searchMode !== '';
+      case 2: return firstName.trim() !== '';
+      case 3: return age !== '' && Number(age) >= 18 && Number(age) <= 99;
+      case 4: return city !== '';
+      default: return true; // Steps 5-13 are always valid (info/optional)
+    }
+  }, [step, searchMode, firstName, age, city]);
+
+  const goTo = useCallback((target: number, dir: 'forward' | 'back') => {
+    if (animating) return;
+    setDirection(dir);
+    setAnimating(true);
+    setTimeout(() => {
+      setStep(target);
+      setAnimating(false);
+    }, 200);
+  }, [animating]);
+
+  const next = useCallback(() => {
+    if (!isValid()) return;
+    if (step === TOTAL_STEPS) {
+      // Save to sessionStorage and redirect
+      sessionStorage.setItem('searchWizard', JSON.stringify({
+        searchMode,
+        firstName: firstName.trim(),
+        age,
+        city,
+        selectedExperiences,
+        instagram: instagram.trim(),
+        hasPhoto: !!photo,
+      }));
+      const params = new URLSearchParams({
+        name: firstName.trim(),
+        location: city,
+        age,
+        hasPhoto: photo ? 'true' : 'false',
+      });
+      router.push(`/results?${params.toString()}`);
+      return;
+    }
+    goTo(step + 1, 'forward');
+  }, [step, isValid, goTo, searchMode, firstName, age, city, selectedExperiences, instagram, photo, router]);
+
+  const back = useCallback(() => {
+    if (step > 1) goTo(step - 1, 'back');
+  }, [step, goTo]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && isValid()) next();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [isValid, next]);
+
+  const renderStep = () => {
+    switch (step) {
+      case 1: return <StepSearchMode searchMode={searchMode} setSearchMode={setSearchMode} />;
+      case 2: return <StepFirstName firstName={firstName} setFirstName={setFirstName} />;
+      case 3: return <StepAge age={age} setAge={setAge} />;
+      case 4: return <StepLocation city={city} setCity={setCity} />;
+      case 5: return <StepAreaStats city={city} />;
+      case 6: return <StepExamplePosts />;
+      case 7: return <StepStakes />;
+      case 8: return <StepRelatability selectedExperiences={selectedExperiences} setSelectedExperiences={setSelectedExperiences} />;
+      case 9: return <StepViralSpread />;
+      case 10: return <StepRemoval />;
+      case 11: return <StepInstagram instagram={instagram} setInstagram={setInstagram} />;
+      case 12: return <StepSocialProof />;
+      case 13: return <StepPhotoUpload photo={photo} photoPreview={photoPreview} setPhoto={setPhoto} setPhotoPreview={setPhotoPreview} />;
+      default: return null;
     }
   };
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !location.trim()) return;
-
-    setLoading(true);
-    // Store search params and redirect to checkout
-    const params = new URLSearchParams({
-      name: name.trim(),
-      location: location.trim(),
-      hasPhoto: photo ? 'true' : 'false',
-    });
-    router.push(`/checkout?${params.toString()}`);
-  };
+  const buttonLabel = step === TOTAL_STEPS ? 'Search AWDTSG 👀 →' : 'Next →';
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="py-8 px-4 md:px-6">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-3xl p-8 md:p-12 border border-[#1a1a1a]">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#1a1a1a] mb-3">
-                Search AWDTSG
-              </h1>
-              <p className="text-gray-600">
-                Enter a name and city to search hundreds of AWDTSG groups
-              </p>
+    <div className="min-h-screen bg-[#f0f0f0] flex flex-col">
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
+        <div className="max-w-[430px] mx-auto flex items-center px-4 py-3">
+          {step > 1 ? (
+            <button
+              type="button"
+              onClick={back}
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors mr-2"
+              aria-label="Go back"
+            >
+              <svg className="w-5 h-5 text-[#1a1a1a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          ) : (
+            <div className="w-8 mr-2" />
+          )}
+          <div className="flex items-center gap-2 flex-1">
+            <span className="text-xl">👀</span>
+            <span className="font-bold text-[#1a1a1a] text-sm">AWDTSG Checker</span>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="max-w-[430px] mx-auto px-4 pb-2">
+          <div className="flex gap-1">
+            {Array.from({ length: TOTAL_STEPS }, (_, i) => (
+              <div
+                key={i}
+                className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+                  i < step ? 'bg-[#1877f2]' : 'bg-gray-200'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* Content */}
+      <main className="flex-1 overflow-hidden">
+        <div className="max-w-[430px] mx-auto px-4 py-5">
+          <div className="bg-white rounded-2xl p-5 shadow-sm">
+            <div
+              className={`transition-all duration-200 ease-in-out ${
+                animating
+                  ? direction === 'forward'
+                    ? 'opacity-0 translate-x-8'
+                    : 'opacity-0 -translate-x-8'
+                  : 'opacity-100 translate-x-0'
+              }`}
+            >
+              {renderStep()}
             </div>
-
-            <form onSubmit={handleSearch} className="space-y-6">
-              {/* Name Input */}
-              <div>
-                <label className="block text-sm font-bold text-[#1a1a1a] mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter first and last name"
-                  className="w-full px-4 py-3 rounded-xl border border-[#1a1a1a] focus:ring-2 focus:ring-[#1877f2] focus:border-[#1877f2] outline-none transition-all text-[#1a1a1a]"
-                  required
-                />
-              </div>
-
-              {/* Location Input */}
-              <div>
-                <label className="block text-sm font-bold text-[#1a1a1a] mb-2">
-                  City
-                </label>
-                <p className="text-xs text-gray-500 mb-2">
-                  AWDTSG groups are organized by city — this helps us find the right groups
-                </p>
-                <input
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="e.g. Miami, FL"
-                  className="w-full px-4 py-3 rounded-xl border border-[#1a1a1a] focus:ring-2 focus:ring-[#1877f2] focus:border-[#1877f2] outline-none transition-all text-[#1a1a1a]"
-                  required
-                />
-              </div>
-
-              {/* Photo Upload */}
-              <div>
-                <label className="block text-sm font-bold text-[#1a1a1a] mb-2">
-                  Photo (optional — enables facial recognition)
-                </label>
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1877f2] transition-colors"
-                >
-                  {photoPreview ? (
-                    <div className="flex flex-col items-center">
-                      <img
-                        src={photoPreview}
-                        alt="Preview"
-                        className="w-24 h-24 rounded-full object-cover border-2 border-[#1877f2] mb-3"
-                      />
-                      <span className="text-sm text-gray-500">Click to change photo</span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center">
-                      <div className="text-4xl mb-2">📸</div>
-                      <span className="text-sm text-gray-500">
-                        Drop a photo here or click to upload
-                      </span>
-                      <span className="text-xs text-gray-400 mt-1">
-                        Enables AI facial recognition matching
-                      </span>
-                    </div>
-                  )}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    className="hidden"
-                  />
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading || !name.trim() || !location.trim()}
-                className="w-full bg-[#1877f2] text-white py-4 rounded-full font-bold text-lg hover:bg-blue-600 transition-colors border border-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Searching...
-                  </span>
-                ) : (
-                  'Search AWDTSG Groups'
-                )}
-              </button>
-            </form>
-
-            <p className="text-xs text-gray-400 text-center mt-4">
-              Your search is 100% confidential. No one will know you searched.
-            </p>
           </div>
         </div>
       </main>
-      <Footer />
+
+      {/* Sticky Footer */}
+      <footer className="sticky bottom-0 z-30 bg-white border-t border-gray-200">
+        <div className="max-w-[430px] mx-auto px-4 py-3 space-y-2">
+          <button
+            type="button"
+            onClick={next}
+            disabled={!isValid()}
+            className={`w-full py-3.5 rounded-full font-bold text-base transition-all ${
+              isValid()
+                ? 'bg-[#1877f2] text-white hover:bg-blue-600 active:scale-[0.98]'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            {buttonLabel}
+          </button>
+
+          <p className="text-center text-xs text-gray-400 flex items-center justify-center gap-1">
+            <span>👀</span>
+            <span>{TIPS[step - 1] || TIPS[0]}</span>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import './globals.css';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
+  weight: ['400', '600', '700', '900'],
   variable: '--font-dm-sans',
 });
 
@@ -25,8 +26,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} font-sans bg-[#f0f2f5] antialiased`}>
-        {children}
+      <body className={`${dmSans.variable} font-sans bg-[#f0f0f0] antialiased`}>
+        <div className="mx-auto w-full max-w-[430px] min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );

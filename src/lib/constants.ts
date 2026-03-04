@@ -5,10 +5,21 @@ export const SITE_URL = 'https://cheatercatcher.vercel.app';
 export const COLORS = {
   primary: '#1877f2',
   dark: '#1a1a1a',
-  lightBg: '#f0f2f5',
+  lightBg: '#f0f0f0',
   lightBlue: '#e7f0fd',
   white: '#ffffff',
 } as const;
+
+export const RED_FLAGS = [
+  { emoji: '🚩', text: 'Talks to multiple women' },
+  { emoji: '⚠️', text: 'Love bombs then ghosts' },
+  { emoji: '👻', text: 'Ghosted after 3 dates' },
+  { emoji: '🚩', text: 'Fake dating profile' },
+  { emoji: '⚠️', text: "Still on apps while 'exclusive'" },
+  { emoji: '💔', text: 'Cheated on his girlfriend' },
+  { emoji: '🚩', text: 'Different age on every app' },
+  { emoji: '👀', text: '6 women came forward' },
+];
 
 export const TESTIMONIALS = [
   {
@@ -36,30 +47,34 @@ export const TESTIMONIALS = [
 
 export const FAQ_ITEMS = [
   {
-    question: 'What is AWDTSG?',
-    answer: 'AWDTSG is a network of private Facebook groups where women share information and experiences about men they\'ve dated or matched with online. The groups exist in hundreds of cities and have millions of members.',
+    question: "What is 'Are We Dating the Same Guy?'",
+    answer: "AWDTSG is a network of private Facebook groups where women share information and experiences about men they've dated or matched with online. The groups exist in hundreds of cities worldwide and have millions of members collectively.",
   },
   {
-    question: 'How does the search work?',
-    answer: 'We search across hundreds of AWDTSG Facebook groups using both name matching and facial recognition AI. Enter a name and city, optionally upload a photo, and we\'ll scan our database of indexed posts.',
+    question: 'How does AWDTSG Checker work?',
+    answer: "We search across hundreds of AWDTSG Facebook groups using both name matching and facial recognition AI. Enter a name, age, and city — optionally upload a photo — and we'll scan our database of 500,000+ indexed posts to find matches.",
+  },
+  {
+    question: 'Who can use this?',
+    answer: "Anyone can use AWDTSG Checker. Whether you want to check if you've been posted yourself, or search for someone you're dating — our tool works for everyone. Searches are 100% anonymous.",
   },
   {
     question: 'Is my search confidential?',
-    answer: 'Yes, 100%. Your search is completely private. We don\'t share your information with anyone, and no one will know you searched.',
+    answer: "Yes, 100%. Your search is completely private. We don't share your information with anyone, and no one will know you searched. All data is encrypted and never sold.",
   },
   {
-    question: 'How accurate is the facial recognition?',
-    answer: 'Our AI uses advanced facial recognition to match photos with high accuracy. It can find matches even when names aren\'t mentioned in posts.',
+    question: 'How does the facial recognition work?',
+    answer: 'Our AI compares uploaded photos against profile images shared in AWDTSG posts. It can find matches even across blurry or partially obscured photos, and works without needing a name match.',
   },
   {
-    question: 'Can I cancel my subscription?',
-    answer: 'Yes, you can cancel anytime. Visit our cancellation page or contact support@awdtsgchecker.com.',
+    question: 'How accurate are the results?',
+    answer: 'Our system has a 94% accuracy rate for facial recognition matches. Combined with name and location matching, we provide highly reliable results. Instagram matching increases accuracy by an additional 60%.',
   },
 ];
 
 export const SEARCH_SOURCES = [
   { icon: '📘', label: 'AWDTSG Groups', desc: 'Facebook groups' },
-  { icon: '🤳', label: 'Instagram', desc: 'Social profiles' },
+  { icon: '📸', label: 'Instagram', desc: 'Social profiles' },
   { icon: '🧠', label: 'Facial AI', desc: 'Face matching' },
   { icon: '𝕏', label: 'Twitter/X', desc: 'Tweets & threads' },
   { icon: '🌐', label: 'Web Search', desc: 'Public mentions' },

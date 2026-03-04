@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroSection from '@/components/home/HeroSection';
+import LogoBanner from '@/components/home/LogoBanner';
 import FeaturesGrid from '@/components/home/FeaturesGrid';
 import StatsBanner from '@/components/home/StatsBanner';
 import SearchSources from '@/components/home/SearchSources';
@@ -12,8 +13,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main>
+      <main className="px-4 pb-6">
         <HeroSection />
+        <LogoBanner />
         <FeaturesGrid />
         <StatsBanner />
         <SearchSources />

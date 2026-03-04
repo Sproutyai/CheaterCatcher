@@ -2,38 +2,31 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#1a1a1a] bg-white mx-4 md:mx-6 rounded-t-3xl">
-      <div className="container mx-auto px-6 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#1877f2] rounded-lg flex items-center justify-center border border-[#1a1a1a]">
-              <span className="text-lg">👀</span>
-            </div>
-            <span className="font-bold text-[#1a1a1a]">AWDTSG Checker</span>
-          </div>
-          <div className="text-center">
-            <p>© 2026 AWDTSG Checker. All rights reserved.</p>
-            <p className="text-xs text-gray-400 mt-1">
-              Not affiliated with Facebook or any AWDTSG group.
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-[#1877f2] transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-[#1877f2] transition-colors">
-              Terms
-            </Link>
-            <Link href="/refund" className="hover:text-[#1877f2] transition-colors">
-              Refund
-            </Link>
-            <Link href="/report" className="hover:text-[#1877f2] transition-colors">
-              Support
-            </Link>
-            <Link href="/cancel" className="hover:text-[#1877f2] transition-colors">
-              Cancel Subscription
-            </Link>
-          </div>
+    <footer className="bg-white border-t border-gray-200 px-4 py-6">
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <span className="text-lg">👀</span>
+          <span className="font-bold text-sm text-[#1a1a1a]">AWDTSG Checker</span>
+        </div>
+        <p className="text-[10px] text-gray-400 mb-1">
+          © 2026 AWDTSG Checker. All rights reserved.
+        </p>
+        <p className="text-[10px] text-gray-400 mb-4">
+          Not affiliated with Facebook or any AWDTSG group.
+        </p>
+        <div className="flex items-center justify-center gap-4 text-[11px] text-gray-500">
+          <Link href="/privacy" className="hover:text-[#1877f2] transition-colors">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-[#1877f2] transition-colors">
+            Terms
+          </Link>
+          <a href="mailto:support@awdtsgchecker.com" className="hover:text-[#1877f2] transition-colors">
+            Support
+          </a>
+          <Link href="/cancel" className="hover:text-[#1877f2] transition-colors">
+            Cancel Subscription
+          </Link>
         </div>
       </div>
     </footer>

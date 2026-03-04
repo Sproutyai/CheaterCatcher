@@ -4,39 +4,46 @@ export default function FeaturesGrid() {
       icon: '🔍',
       title: 'Search AWDTSG Groups',
       description:
-        'Scan hundreds of "Are We Dating the Same Guy?" Facebook groups aggregated in one place for posts, warnings, and reviews',
+        'Scan hundreds of "Are We Dating the Same Guy?" Facebook groups aggregated in one place for posts, warnings, and reviews.',
     },
     {
       icon: '🤳',
       title: 'Facial Recognition Match',
       description:
-        'Upload a photo and our AI compares it to profile photos shared in posts — finding matches even without a name',
+        'Upload a photo and our AI compares it to profile photos shared in posts — finding matches even without a name.',
     },
     {
       icon: '🛡️',
-      title: 'Protect Yourself',
+      title: 'Take Control',
       description:
-        'Know what\'s being said so you can address misunderstandings, or avoid someone with a track record of red flags',
+        "Know what's being said so you can address misunderstandings, or avoid someone with a track record of red flags.",
     },
   ];
 
   return (
-    <section className="bg-white rounded-3xl mx-4 md:mx-6 mt-6 py-16 md:py-20 border border-[#1a1a1a]">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <h2 className="text-4xl md:text-5xl font-black text-center mb-12 tracking-tight uppercase">
-          Use AWDTSG Checker to
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {features.map((feature, i) => (
-            <div key={i} className="bg-[#f0f2f5] rounded-2xl p-6 border border-[#1a1a1a]">
-              <div className="w-14 h-14 bg-[#e7f0fd] rounded-xl flex items-center justify-center mb-4 text-2xl border border-[#1a1a1a]">
-                {feature.icon}
-              </div>
-              <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+    <section className="mt-4 bg-white rounded-2xl p-5 shadow-sm">
+      <h2 className="text-xl font-black text-[#1a1a1a] mb-4">
+        Use AWDTSG Checker to
+      </h2>
+      <div className="space-y-3">
+        {features.map((feature, i) => (
+          <div
+            key={i}
+            className="bg-[#f7f7f7] rounded-2xl p-4 flex gap-3"
+          >
+            <div className="w-11 h-11 bg-[#e7f0fd] rounded-xl flex items-center justify-center text-xl shrink-0">
+              {feature.icon}
             </div>
-          ))}
-        </div>
+            <div>
+              <h3 className="font-bold text-sm text-[#1a1a1a] mb-0.5">
+                {feature.title}
+              </h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
