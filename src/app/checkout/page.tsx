@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { PRICING, type PlanKey, DEFAULT_PLAN } from '@/lib/stripe';
+import { PRICING, type PlanKey, DEFAULT_PLAN } from '@/lib/constants';
 
 function BackArrow() {
   const router = useRouter();
@@ -22,9 +22,9 @@ function CheckoutContent() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const name = searchParams.get('name') || sessionStorage?.getItem('searchName') || 'Someone';
-  const city = searchParams.get('location') || searchParams.get('city') || sessionStorage?.getItem('searchCity') || 'your area';
-  const postsFound = searchParams.get('posts') || sessionStorage?.getItem('postsFound') || '6';
+  const name = searchParams.get('name') || (typeof window !== 'undefined' ? sessionStorage.getItem('searchName') : null) || 'Someone';
+  const city = searchParams.get('location') || searchParams.get('city') || (typeof window !== 'undefined' ? sessionStorage.getItem('searchCity') : null) || 'your area';
+  const postsFound = searchParams.get('posts') || (typeof window !== 'undefined' ? sessionStorage.getItem('postsFound') : null) || '6';
 
   const plan = PRICING[selectedPlan];
 

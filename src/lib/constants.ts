@@ -1,6 +1,46 @@
+export const PRICING = {
+  single: {
+    amount: 4.99,
+    amountCents: 499,
+    perDay: 4.99,
+    label: 'Single Report',
+    period: 'one-time',
+    features: ['1 search report'],
+    disclaimer: 'One-time payment of $4.99. No recurring charges.',
+    autoRenew: false,
+  },
+  weekly: {
+    amount: 9.99,
+    amountCents: 999,
+    perDay: 1.43,
+    label: 'Weekly',
+    period: '/week',
+    features: ['Unlimited searches', 'Auto-renew weekly'],
+    disclaimer: 'By continuing you agree to be charged $9.99/week until canceled.',
+    popular: true,
+    autoRenew: true,
+  },
+  monthly: {
+    amount: 17.99,
+    amountCents: 1799,
+    perDay: 0.59,
+    label: 'Monthly',
+    period: '/month',
+    features: ['Unlimited searches', 'Priority scanning', 'Auto-renew monthly'],
+    disclaimer:
+      'By continuing you agree to be charged $17.99/month. Renews at $35.98/month unless canceled before renewal date.',
+    autoRenew: true,
+  },
+} as const;
+
+export type PlanKey = keyof typeof PRICING;
+export const DEFAULT_PLAN: PlanKey = 'weekly';
+
 export const SITE_NAME = 'AWDTSG Checker';
-export const SITE_DESCRIPTION = 'Search "Are We Dating the Same Guy?" Facebook groups with facial recognition. Find out if you\'ve been posted.';
+export const SITE_DESCRIPTION =
+  'Search "Are We Dating the Same Guy?" Facebook groups with facial recognition. Find out if you\'ve been posted.';
 export const SITE_URL = 'https://cheatercatcher.vercel.app';
+export const SUPPORT_EMAIL = 'support@cheatercatcher.com';
 
 export const COLORS = {
   primary: '#1877f2',
@@ -48,27 +88,33 @@ export const TESTIMONIALS = [
 export const FAQ_ITEMS = [
   {
     question: "What is 'Are We Dating the Same Guy?'",
-    answer: "AWDTSG is a network of private Facebook groups where women share information and experiences about men they've dated or matched with online. The groups exist in hundreds of cities worldwide and have millions of members collectively.",
+    answer:
+      "AWDTSG is a network of private Facebook groups where women share information and experiences about men they've dated or matched with online. The groups exist in hundreds of cities worldwide and have millions of members collectively.",
   },
   {
     question: 'How does AWDTSG Checker work?',
-    answer: "We search across hundreds of AWDTSG Facebook groups using both name matching and facial recognition AI. Enter a name, age, and city — optionally upload a photo — and we'll scan our database of 500,000+ indexed posts to find matches.",
+    answer:
+      "We search across hundreds of AWDTSG Facebook groups using both name matching and facial recognition AI. Enter a name, age, and city — optionally upload a photo — and we'll scan our database of 500,000+ indexed posts to find matches.",
   },
   {
     question: 'Who can use this?',
-    answer: "Anyone can use AWDTSG Checker. Whether you want to check if you've been posted yourself, or search for someone you're dating — our tool works for everyone. Searches are 100% anonymous.",
+    answer:
+      "Anyone can use AWDTSG Checker. Whether you want to check if you've been posted yourself, or search for someone you're dating — our tool works for everyone. Searches are 100% anonymous.",
   },
   {
     question: 'Is my search confidential?',
-    answer: "Yes, 100%. Your search is completely private. We don't share your information with anyone, and no one will know you searched. All data is encrypted and never sold.",
+    answer:
+      "Yes, 100%. Your search is completely private. We don't share your information with anyone, and no one will know you searched. All data is encrypted and never sold.",
   },
   {
     question: 'How does the facial recognition work?',
-    answer: 'Our AI compares uploaded photos against profile images shared in AWDTSG posts. It can find matches even across blurry or partially obscured photos, and works without needing a name match.',
+    answer:
+      'Our AI compares uploaded photos against profile images shared in AWDTSG posts. It can find matches even across blurry or partially obscured photos, and works without needing a name match.',
   },
   {
     question: 'How accurate are the results?',
-    answer: 'Our system has a 94% accuracy rate for facial recognition matches. Combined with name and location matching, we provide highly reliable results. Instagram matching increases accuracy by an additional 60%.',
+    answer:
+      'Our system has a 94% accuracy rate for facial recognition matches. Combined with name and location matching, we provide highly reliable results. Instagram matching increases accuracy by an additional 60%.',
   },
 ];
 
